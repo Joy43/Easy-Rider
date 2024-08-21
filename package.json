@@ -54,6 +54,7 @@
     "react-native-swiper": "^1.6.0",
     "react-native-web": "^0.19.12",
     "stripe": "^16.7.0",
+    "swiper": "^11.1.9",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

@@ -1,55 +1,71 @@
-import React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useUser } from '@clerk/clerk-expo'
+import InputField from "@/components/InputField";
+import { useUser } from "@clerk/clerk-expo";
+import { Image, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const Profile: React.FC = () => {
-  const { isLoaded, isSignedIn, user } = useUser()
 
-  if (!isLoaded) {
-    return (
-      <SafeAreaView>
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    )
-  }
 
-  if (!isSignedIn) {
-    return (
-      <SafeAreaView>
-        <Text>You are not signed in.</Text>
-      </SafeAreaView>
-    )
-  }
+const Profile = () => {
+  const { user } = useUser();
 
   return (
-    <SafeAreaView>
-      {user?.imageUrl && (
-        <Image
-          source={{ uri: user.imageUrl }}
-          style={styles.profileImage}
-        />
-      )}
-      <Text style={styles.userName}>
-        {user?.firstName}
-      </Text>
+    <SafeAreaView className="flex-1">
+      <ScrollView
+        className="px-5"
+        contentContainerStyle={{ paddingBottom: 120 }}
+      >
+        <Text className="text-2xl font-JakartaBold my-5">My profile</Text>
+
+        <View className="flex items-center justify-center my-5">
+          <Image
+            source={{
+              uri: user?.externalAccounts[0]?.imageUrl ?? user?.imageUrl,
+            }}
+            style={{ width: 110, height: 110, borderRadius: 110 / 2 }}
+            className=" rounded-full h-[110px] w-[110px] border-[3px] border-white shadow-sm shadow-neutral-300"
+          />
+        </View>
+
+        <View className="flex flex-col items-start justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 px-5 py-3">
+          <View className="flex flex-col items-start justify-start w-full">
+            <InputField
+              label="First name"
+              placeholder={user?.firstName || "Not Found"}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+
+            <InputField
+              label="Last name"
+              placeholder={user?.lastName || "Not Found"}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+
+            <InputField
+              label="Email"
+              placeholder={
+                user?.primaryEmailAddress?.emailAddress || "Not Found"
+              }
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+
+            <InputField
+              label="Phone"
+              placeholder={user?.primaryPhoneNumber?.phoneNumber || "Not Found"}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    alignSelf: 'center',
-  },
-  userName: {
-    textAlign: 'center',
-    backgroundColor: '#f87171',
-    color: '#60a5fa',
-    marginTop: 10,
-  },
-})
-
-export default Profile
+export default Profile;

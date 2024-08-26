@@ -90,6 +90,16 @@ export default function Layout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="developer"
+        options={{
+          title: "About us",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.developer} focused={focused} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
